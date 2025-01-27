@@ -14,6 +14,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "YOUTUBE_API_KEY", "AIzaSyC8TLvzjkKz6kE_HbTd7R_yM60f5pnCGIQ")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -42,6 +46,14 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    // retrofit
+    implementation(libs.retrofit2.retrofit)
+    // gson converter
+    implementation(libs.converter.gson)
+    // glide
+    implementation (libs.glide)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
