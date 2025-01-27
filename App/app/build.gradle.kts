@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    }
+}
 
 android {
     namespace = "com.example.testeicasei"
@@ -14,7 +14,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "YOUTUBE_API_KEY", System.getenv("YOUTUBE_API_KEY"))
+        buildConfigField(
+            "String",
+            "YOUTUBE_API_KEY",
+            "\"${project.findProperty("YOUTUBE_API_KEY")}\""
+        )
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,7 +56,7 @@ dependencies {
     // gson converter
     implementation(libs.converter.gson)
     // glide
-    implementation (libs.glide)
+    implementation(libs.glide)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
