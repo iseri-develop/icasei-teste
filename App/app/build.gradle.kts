@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-}
+    }
 
 android {
     namespace = "com.example.testeicasei"
@@ -14,7 +14,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "YOUTUBE_API_KEY", "AIzaSyC8TLvzjkKz6kE_HbTd7R_yM60f5pnCGIQ")
+        buildConfigField("String", "YOUTUBE_API_KEY", System.getenv("YOUTUBE_API_KEY"))
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
