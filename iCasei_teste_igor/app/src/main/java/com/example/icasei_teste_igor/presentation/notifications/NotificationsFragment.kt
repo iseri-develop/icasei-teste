@@ -1,4 +1,4 @@
-package com.example.icasei_teste_igor.ui.notifications
+package com.example.icasei_teste_igor.presentation.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

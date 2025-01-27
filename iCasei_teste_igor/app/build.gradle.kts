@@ -19,12 +19,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        //load the values from .properties file
+        // carrega os valores do arquivo .properties
         val keystoreFile = project.rootProject.file("apikeys.properties")
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
-        //return empty key in case something goes wrong
+        // retorna uma chave vazia em caso de erro
         val apiKeyYT = properties.getProperty("YOUTUBE_API_KEY") ?: ""
 
         buildConfigField(
@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.converter.gson)
     // Glide
     implementation(libs.glide)
+    // interceptor
+    implementation(libs.logging.interceptor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

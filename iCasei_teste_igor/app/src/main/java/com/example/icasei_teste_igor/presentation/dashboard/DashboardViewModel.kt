@@ -1,4 +1,4 @@
-package com.example.icasei_teste_igor.ui.dashboard
+package com.example.icasei_teste_igor.presentation.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
