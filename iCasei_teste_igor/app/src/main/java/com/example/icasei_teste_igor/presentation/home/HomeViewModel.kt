@@ -4,15 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.icasei_teste_igor.data.network.ApiConfig
-import com.example.icasei_teste_igor.domain.model.ChannelModel
+import com.example.icasei_teste_igor.domain.model.VideoYT
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
 class HomeViewModel : ViewModel() {
 
-    private val _channel = MutableLiveData<ChannelModel?>()
-    val channel: MutableLiveData<ChannelModel?> = _channel
+    private val _video = MutableLiveData<VideoYT?>()
+    val video: MutableLiveData<VideoYT?> = _video
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -21,36 +23,37 @@ class HomeViewModel : ViewModel() {
     val message: LiveData<String> = _message
 
     init {
-        getChannel()
+        viewModelScope.launch {
+            getVideoList()
+        }
     }
 
-    fun getChannel() {
-        val client = ApiConfig.getService().getChannel(
+    private fun getVideoList() {
+        _isLoading.value = true
+        val client = ApiConfig.getService().getListVideos(
             part = "snippet",
-            id = "UC_x5XG1OV2P6uZZ5FSM9Ttw"
+            chart = "mostPopular"
         )
 
-        client.enqueue(object : retrofit2.Callback<ChannelModel> {
-            override fun onResponse(call: Call<ChannelModel>, response: Response<ChannelModel>) {
+        client.enqueue(object : retrofit2.Callback<VideoYT> {
+            override fun onResponse(call: Call<VideoYT>, response: Response<VideoYT>) {
                 _isLoading.value = false
 
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data != null) {
-                        _channel.value = data
+                        _video.value = data
                     } else {
-                        _message.value = "No channel"
+                        _message.value = "No video"
                     }
                 } else {
                     _message.value = response.message()
                 }
             }
 
-            override fun onFailure(call: Call<ChannelModel>, t: Throwable) {
-                Log.e("HomeViewModel", t.message.toString())
-
-                _isLoading.value = false
-                _message.value = t.message.toString()
+            override fun onFailure(call: Call<VideoYT>, t: Throwable) {
+                Log.e("HomeViewModel", "onFailure: ${t.message}")
+                _message.value = t.message
             }
         })
     }
