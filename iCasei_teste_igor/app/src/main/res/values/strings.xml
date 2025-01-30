@@ -7,4 +7,7 @@
     <string name="title_playlist">Playlist</string>
     <string name="title_profile">Profile</string>
     <string name="description_thumbnail">Thumbnail</string>
+    <string name="menu_search">Search</string>
+    <string name="search_hint">Digite aqui o nome do vídeo</string>
+    <string name="search_video">Procure um video</string>
 </resources>

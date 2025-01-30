@@ -1,18 +1,22 @@
 package com.example.icasei_teste_igor.domain.model
 
-import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-@Keep
-data class VideoYT(
+class VideoSearchYT (
     @SerializedName("items")
     val items: List<VideoYTItem>
 ){
     data class VideoYTItem(
+
         @SerializedName("id")
-        val videoId: Any,
+        val id: VideoIdItem,
 
         @SerializedName("snippet")
         val snippet: Snippet
+    )
+
+    data class VideoIdItem(
+        @SerializedName("videoId")
+        val videoId: String
     )
 }

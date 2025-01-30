@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icasei_teste_igor.data.network.ApiConfig
+import com.example.icasei_teste_igor.domain.model.VideoSearchYT
 import com.example.icasei_teste_igor.domain.model.VideoYT
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -16,6 +17,9 @@ class HomeViewModel : ViewModel() {
     private val _video = MutableLiveData<VideoYT?>()
     val video: MutableLiveData<VideoYT?> = _video
 
+    private val _videoSearched = MutableLiveData<VideoYT?>()
+    val videoSearched: MutableLiveData<VideoYT?> = _videoSearched
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -23,12 +27,10 @@ class HomeViewModel : ViewModel() {
     val message: LiveData<String> = _message
 
     init {
-        viewModelScope.launch {
-            getVideoList()
-        }
+        getVideoList()
     }
 
-    private fun getVideoList() {
+    fun getVideoList() {
         _isLoading.value = true
         val client = ApiConfig.getService().getListVideos(
             part = "snippet",
@@ -56,5 +58,36 @@ class HomeViewModel : ViewModel() {
                 _message.value = t.message
             }
         })
+    }
+
+    fun getVideoSearched(query: String?) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val client = ApiConfig.getService().getVideoSearched(
+                part = "snippet",
+                query = query ?: "",
+                maxResults = 10)
+
+
+            client.enqueue(object : retrofit2.Callback<VideoYT> {
+                override fun onResponse(call: Call<VideoYT>, response: Response<VideoYT>) {
+                    _isLoading.value = false
+
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
+                            _videoSearched.value = data
+                        } else {
+                            _message.value = "No video"
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<VideoYT>, t: Throwable) {
+                    Log.e("HomeViewModel", "onFailure: ${t.message}")
+                    _message.value = t.message
+                }
+            })
+        }
     }
 }

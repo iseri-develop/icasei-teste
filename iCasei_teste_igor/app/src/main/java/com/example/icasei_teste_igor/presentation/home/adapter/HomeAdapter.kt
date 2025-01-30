@@ -1,11 +1,14 @@
 package com.example.icasei_teste_igor.presentation.home.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.icasei_teste_igor.databinding.ItemHomeBinding
 import com.example.icasei_teste_igor.domain.model.VideoYT
+import com.example.icasei_teste_igor.presentation.PlayerActivity
+import com.google.gson.JsonElement
 
 class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -20,7 +23,24 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 .load(item.snippet.thumbnails.high.url)
                 .into(binding.imageViewItemHome)
             binding.textViewTitleItemHome.text = item.snippet.title
+
             binding.textViewDateItemHome.text = item.snippet.publishedAt
+
+            // evento de clique no item para abrir a tela de vídeo
+            binding.imageViewItemHome.setOnClickListener {
+                val intent = Intent(it.context, PlayerActivity::class.java)
+
+                // Verifica se o id é do tipo StringId ou ChannelId
+                val videoIdToSend = when (val id = item.videoId) {
+                    is String -> id
+                    is JsonElement -> id.asJsonObject.getAsJsonPrimitive("channelId").asString
+                    else -> null
+                }
+
+                intent.putExtra("video_id", videoIdToSend)
+                intent.putExtra("title", item.snippet.title)
+                it.context.startActivity(intent)
+            }
         }
     }
 

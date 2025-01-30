@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.glide)
     // interceptor
     implementation(libs.logging.interceptor)
+    //
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
