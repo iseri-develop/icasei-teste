@@ -1,9 +1,11 @@
 import java.util.Properties
 
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -67,7 +69,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
+    //Room
+    implementation(libs.androidx.room.runtime.v261)
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.testing)
     // retrofit
     implementation(libs.retrofit)
     // gson converter
@@ -78,6 +84,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     //
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.1")
+    //Firebase
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -20,11 +20,24 @@
         android:id="@+id/textView_title_player"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonFavorite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/youtube_player_view"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_margin="16dp"
-        tools:text="title video"/>
+        tools:text="title video" />
+
+    <ImageButton
+        android:id="@+id/buttonFavorite"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/favorite_icon"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_favorite_off"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/youtube_player_view"
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,4 +10,14 @@
     <string name="menu_search">Search</string>
     <string name="search_hint">Digite aqui o nome do vídeo</string>
     <string name="search_video">Procure um video</string>
+    <string name="fazer_login">Fazer login</string>
+    <string name="email">Email</string>
+    <string name="nome">Nome</string>
+    <string name="imagem_de_perfil">Imagem de perfil</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="logout">Logout</string>
+    <string name="t_tulo_do_v_deo">Título do Vídeo</string>
+    <string name="login">Login</string>
+    <string name="favorite_icon">favorite icon</string>
+    <string name="default_web_client_id">Default web id client</string>
 </resources>

@@ -9,6 +9,9 @@ import com.example.icasei_teste_igor.databinding.ItemHomeBinding
 import com.example.icasei_teste_igor.domain.model.VideoYT
 import com.example.icasei_teste_igor.presentation.PlayerActivity
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import com.google.gson.internal.LinkedTreeMap
 
 class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -32,14 +35,43 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 // Verifica se o id é do tipo StringId ou ChannelId
                 val videoIdToSend = when (val id = item.videoId) {
-                    is String -> id
-                    is JsonElement -> id.asJsonObject.getAsJsonPrimitive("channelId").asString
-                    else -> null
+                    is String -> id // Caso seja uma String, passa diretamente
+                    is LinkedTreeMap<*, *> -> {
+                        // Se for um LinkedTreeMap, converta para JsonObject
+                        val jsonObject = JsonObject().apply {
+                            id.forEach { (key, value) ->
+                                this.add(key.toString(), convertToJsonElement(value)) // Adiciona corretamente os valores
+                            }
+                        }
+
+                        // Agora pode acessar os campos do JsonObject como normalmente faria
+                        val channelId = jsonObject.getAsJsonPrimitive("videoId").asString
+                        channelId // Passa o channelId ou outro campo que você desejar
+                    }
+                    else -> null // Caso seja um tipo inesperado
                 }
 
                 intent.putExtra("video_id", videoIdToSend)
                 intent.putExtra("title", item.snippet.title)
+                intent.putExtra("thumbnail", item.snippet.thumbnails.high.url)
                 it.context.startActivity(intent)
+            }
+        }
+
+        // Função auxiliar para converter valores para JsonElement
+        private fun convertToJsonElement(value: Any): JsonElement {
+            return when (value) {
+                is String -> JsonPrimitive(value) // Converte String para JsonPrimitive
+                is Number -> JsonPrimitive(value) // Converte Number para JsonPrimitive
+                is Boolean -> JsonPrimitive(value) // Converte Boolean para JsonPrimitive
+                is LinkedTreeMap<*, *> -> {
+                    val jsonObject = JsonObject()
+                    value.forEach { (key, subValue) ->
+                        jsonObject.add(key.toString(), convertToJsonElement(subValue)) // Recursão para sub-objetos
+                    }
+                    jsonObject // Retorna o JsonObject
+                }
+                else -> JsonPrimitive(value.toString()) // Para qualquer outro tipo, converte para String
             }
         }
     }

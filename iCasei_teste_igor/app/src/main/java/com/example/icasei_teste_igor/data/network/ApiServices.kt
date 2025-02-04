@@ -1,7 +1,5 @@
 package com.example.icasei_teste_igor.data.network
 
-import com.example.icasei_teste_igor.domain.model.ChannelModel
-import com.example.icasei_teste_igor.domain.model.VideoSearchYT
 import com.example.icasei_teste_igor.domain.model.VideoYT
 import retrofit2.Call
 import retrofit2.http.GET
@@ -13,12 +11,6 @@ interface ApiServices {
         @Query("part") part: String,
         @Query("chart") chart: String,
     ) : Call<VideoYT>
-
-    @GET("channels")
-    fun getChannel(
-        @Query("part") part: String,
-        @Query("id") id: String
-    ) : Call<ChannelModel>
 
     @GET("search")
     fun getVideoSearched(

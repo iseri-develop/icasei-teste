@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.icasei_teste_igor.data.network.ApiConfig
-import com.example.icasei_teste_igor.domain.model.VideoSearchYT
 import com.example.icasei_teste_igor.domain.model.VideoYT
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -30,34 +29,36 @@ class HomeViewModel : ViewModel() {
         getVideoList()
     }
 
-    fun getVideoList() {
-        _isLoading.value = true
-        val client = ApiConfig.getService().getListVideos(
-            part = "snippet",
-            chart = "mostPopular"
-        )
+    private fun getVideoList() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val client = ApiConfig.getService().getListVideos(
+                part = "snippet",
+                chart = "mostPopular"
+            )
 
-        client.enqueue(object : retrofit2.Callback<VideoYT> {
-            override fun onResponse(call: Call<VideoYT>, response: Response<VideoYT>) {
-                _isLoading.value = false
+            client.enqueue(object : retrofit2.Callback<VideoYT> {
+                override fun onResponse(call: Call<VideoYT>, response: Response<VideoYT>) {
+                    _isLoading.value = false
 
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        _video.value = data
+                    if (response.isSuccessful) {
+                        val data = response.body()
+                        if (data != null) {
+                            _video.value = data
+                        } else {
+                            _message.value = "No video"
+                        }
                     } else {
-                        _message.value = "No video"
+                        _message.value = response.message()
                     }
-                } else {
-                    _message.value = response.message()
                 }
-            }
 
-            override fun onFailure(call: Call<VideoYT>, t: Throwable) {
-                Log.e("HomeViewModel", "onFailure: ${t.message}")
-                _message.value = t.message
-            }
-        })
+                override fun onFailure(call: Call<VideoYT>, t: Throwable) {
+                    Log.e("HomeViewModel", "onFailure: ${t.message}")
+                    _message.value = t.message
+                }
+            })
+        }
     }
 
     fun getVideoSearched(query: String?) {
@@ -67,7 +68,6 @@ class HomeViewModel : ViewModel() {
                 part = "snippet",
                 query = query ?: "",
                 maxResults = 10)
-
 
             client.enqueue(object : retrofit2.Callback<VideoYT> {
                 override fun onResponse(call: Call<VideoYT>, response: Response<VideoYT>) {
