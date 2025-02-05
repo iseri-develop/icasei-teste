@@ -1,9 +1,8 @@
 package com.example.icasei_teste_igor.presentation
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,7 +10,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.icasei_teste_igor.R
 import com.example.icasei_teste_igor.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 

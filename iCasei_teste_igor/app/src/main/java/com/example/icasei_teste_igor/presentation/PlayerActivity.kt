@@ -1,6 +1,7 @@
 package com.example.icasei_teste_igor.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -31,15 +32,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (isEnabled) {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
+        Log.d("FCM", "PlayerActivity foi iniciada")
 
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
