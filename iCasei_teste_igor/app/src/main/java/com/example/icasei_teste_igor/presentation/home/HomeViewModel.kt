@@ -67,6 +67,7 @@ class HomeViewModel : ViewModel() {
             val client = ApiConfig.getService().getVideoSearched(
                 part = "snippet",
                 query = query ?: "",
+                type = "video",
                 maxResults = 10)
 
             client.enqueue(object : retrofit2.Callback<VideoYT> {

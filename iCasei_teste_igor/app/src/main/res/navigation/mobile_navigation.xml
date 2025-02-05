@@ -15,11 +15,31 @@
         android:id="@+id/navigation_playlist"
         android:name="com.example.icasei_teste_igor.presentation.playlist.PlaylistFragment"
         android:label="@string/title_playlist"
-        tools:layout="@layout/fragment_playlist" />
+        tools:layout="@layout/fragment_playlist">
+
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistDetailFragment"
+            app:destination="@+id/navigation_playlist_detail"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.icasei_teste_igor.presentation.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_playlist_detail"
+        android:name="com.example.icasei_teste_igor.presentation.playlistdetail.PlaylistDetailFragment"
+        android:label="Detalhes da Playlist"
+        tools:layout="@layout/fragment_playlist_detail">
+        <argument
+            android:name="playlistId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="playlistTitle"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 </navigation>

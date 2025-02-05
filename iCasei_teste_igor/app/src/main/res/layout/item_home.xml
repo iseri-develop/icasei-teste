@@ -20,24 +20,37 @@
         android:id="@+id/textView_title_item_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_add_to_playlist"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_item_home"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_margin="16dp"
-        tools:text="title video"/>
+        tools:text="title video" />
 
-    <TextView
-        android:id="@+id/textView_date_item_home"
-        android:layout_width="0dp"
+<!--    <TextView-->
+<!--        android:id="@+id/textView_date_item_home"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView_title_item_home"-->
+<!--        tools:text="Date video" />-->
+
+    <ImageView
+        android:id="@+id/imageView_add_to_playlist"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_playlist_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_title_item_home"
-        tools:text="Date video" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_item_home" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@ data class VideoYT(
 ){
     data class VideoYTItem(
         @SerializedName("id")
-        val videoId: Any,
+        var videoId: Any,
 
         @SerializedName("snippet")
         val snippet: Snippet

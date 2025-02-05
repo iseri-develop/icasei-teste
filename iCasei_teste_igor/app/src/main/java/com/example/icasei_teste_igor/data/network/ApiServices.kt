@@ -16,6 +16,7 @@ interface ApiServices {
     fun getVideoSearched(
         @Query("part") part: String,
         @Query("q") query: String,
+        @Query("type") type: String,
         @Query("maxresults") maxResults: Int
     ) : Call<VideoYT>
 }

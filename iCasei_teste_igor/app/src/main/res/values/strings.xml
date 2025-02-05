@@ -20,4 +20,11 @@
     <string name="login">Login</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="default_web_client_id">Default web id client</string>
+    <string name="criar_nova_playlist">Criar nova playlist</string>
+    <string name="titulo">Título</string>
+    <string name="nova_playlist">Nova Playlist</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_video">Delete video</string>
+    <string name="selecionar_playlist">Selecionar Playlist</string>
 </resources>

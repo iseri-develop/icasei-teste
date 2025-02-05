@@ -13,48 +13,58 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.google.gson.internal.LinkedTreeMap
 
-class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter(
+    private val onAddToPlaylistClicked: (VideoYT.VideoYTItem) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val items = mutableListOf<VideoYT.VideoYTItem>()
-
     class HomeViewHolder(itemView: ItemHomeBinding) :
         RecyclerView.ViewHolder(itemView.root) {
         private val binding = itemView
 
-        fun bind(item: VideoYT.VideoYTItem) {
+        fun bind(item: VideoYT.VideoYTItem, onAddToPlaylistClicked: (VideoYT.VideoYTItem) -> Unit) {
             Glide.with(binding.root)
                 .load(item.snippet.thumbnails.high.url)
                 .into(binding.imageViewItemHome)
             binding.textViewTitleItemHome.text = item.snippet.title
 
-            binding.textViewDateItemHome.text = item.snippet.publishedAt
+//            binding.textViewDateItemHome.text = item.snippet.publishedAt
 
             // evento de clique no item para abrir a tela de vídeo
             binding.imageViewItemHome.setOnClickListener {
                 val intent = Intent(it.context, PlayerActivity::class.java)
 
-                // Verifica se o id é do tipo StringId ou ChannelId
-                val videoIdToSend = when (val id = item.videoId) {
-                    is String -> id // Caso seja uma String, passa diretamente
-                    is LinkedTreeMap<*, *> -> {
-                        // Se for um LinkedTreeMap, converta para JsonObject
-                        val jsonObject = JsonObject().apply {
-                            id.forEach { (key, value) ->
-                                this.add(key.toString(), convertToJsonElement(value)) // Adiciona corretamente os valores
-                            }
-                        }
-
-                        // Agora pode acessar os campos do JsonObject como normalmente faria
-                        val channelId = jsonObject.getAsJsonPrimitive("videoId").asString
-                        channelId // Passa o channelId ou outro campo que você desejar
-                    }
-                    else -> null // Caso seja um tipo inesperado
-                }
+                // Converte o videoId para String
+                val videoIdToSend = convertVideoId(item)
 
                 intent.putExtra("video_id", videoIdToSend)
                 intent.putExtra("title", item.snippet.title)
                 intent.putExtra("thumbnail", item.snippet.thumbnails.high.url)
                 it.context.startActivity(intent)
+            }
+
+            binding.imageViewAddToPlaylist.setOnClickListener {
+                item.videoId = convertVideoId(item)!!
+                onAddToPlaylistClicked(item) // Passa o vídeo para o listener
+            }
+        }
+
+        private fun convertVideoId(item: VideoYT.VideoYTItem) : String? {
+            return when (val id = item.videoId) {
+                is String -> id // Caso seja uma String, passa diretamente
+                is LinkedTreeMap<*, *> -> {
+                    // Se for um LinkedTreeMap, converta para JsonObject
+                    val jsonObject = JsonObject().apply {
+                        id.forEach { (key, value) ->
+                            this.add(key.toString(), convertToJsonElement(value)) // Adiciona corretamente os valores
+                        }
+                    }
+
+                    // Agora pode acessar os campos do JsonObject como normalmente faria
+                    val channelId = jsonObject.getAsJsonPrimitive("videoId").asString
+                    channelId // Passa o channelId ou outro campo que você desejar
+                }
+                else -> null // Caso seja um tipo inesperado
             }
         }
 
@@ -74,6 +84,7 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 else -> JsonPrimitive(value.toString()) // Para qualquer outro tipo, converte para String
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -86,7 +97,7 @@ class HomeAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as HomeViewHolder).bind(items[position])
+        (holder as HomeViewHolder).bind(items[position], onAddToPlaylistClicked)
     }
 
     fun setData(data: List<VideoYT.VideoYTItem>) {

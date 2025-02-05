@@ -15,8 +15,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.icasei_teste_igor.R
+import com.example.icasei_teste_igor.data.local.AppDatabase
 import com.example.icasei_teste_igor.databinding.FragmentHomeBinding
+import com.example.icasei_teste_igor.domain.model.VideoYT
 import com.example.icasei_teste_igor.presentation.home.adapter.HomeAdapter
+import com.example.icasei_teste_igor.presentation.playlist.PlaylistViewModel
+import com.example.icasei_teste_igor.presentation.playlistdetail.PlaylistViewModelFactory
 
 class HomeFragment : Fragment() {
 
@@ -24,8 +28,12 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val homeVewModel: HomeViewModel by viewModels()
+    private val playlistDao by lazy { AppDatabase.getDatabase(requireContext()).playlistDao() }
+    private val viewModel: PlaylistViewModel by viewModels { PlaylistViewModelFactory(playlistDao) }
 
-    private val adapter = HomeAdapter()
+    private val adapter = HomeAdapter { selectedVideo ->
+        showSelectPlaylistDialog(selectedVideo)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,6 +100,16 @@ class HomeFragment : Fragment() {
                 adapter.setData(it.items)
             }
         }
+    }
+
+    private fun showSelectPlaylistDialog(video: VideoYT.VideoYTItem) {
+        val dialog = SelectPlaylistDialogFragment.newInstance(
+            video.videoId.toString(),
+            video.snippet.title,
+            video.snippet.thumbnails.high.url
+        )
+        dialog.setViewModel(viewModel)
+        dialog.show(parentFragmentManager, "SelectPlaylistDialog")
     }
 
     override fun onDestroyView() {
