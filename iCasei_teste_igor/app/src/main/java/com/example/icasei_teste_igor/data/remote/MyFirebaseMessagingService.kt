@@ -35,16 +35,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             )
 
             // Crie a notificação
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            // Certifique-se de usar o mesmo ID do canal que foi criado
             val notification = NotificationCompat.Builder(this, "default")
                 .setContentTitle("Novo Vídeo")
-                .setContentText("Clique para assistir")
+                .setContentText("Clique para assistir!")
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+                .setContentIntent(pendingIntent) // Associando o PendingIntent
+                .setAutoCancel(true) // Faz com que a notificação seja removida após o clique
                 .build()
 
-            // Exiba a notificação
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(0, notification)
         }
     }
